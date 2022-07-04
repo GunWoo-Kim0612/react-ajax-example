@@ -6,6 +6,14 @@ import './App.css';
 
 class Nav extends Component {
 
+  state={
+    list:[
+      {}
+    ]
+  }
+
+
+
   //기본내제기능, 오버라이딩 느낌으로 함수에 기능 넣어서 해당 동작 시점을 관찰하겠다
   componentDidMount(){
     fetch('list.json')
@@ -16,6 +24,7 @@ class Nav extends Component {
     // .then((json)=>console.log(json).bind(this));
     .then(function(json){
       console.log(json);
+      this.setState({list : json});         //값 대체
     }.bind(this))
     
     // json으로 받아온 데이터를 동적으로(사용) rendering을 하려면 
@@ -25,15 +34,23 @@ class Nav extends Component {
 
 
   render() {
+
+    let listTag = [];
+    for(let i = 0; i < this.state.list.length; i++){
+      let li = this.state.list[i]
+      listTag.push(<li key={li.id}><a href={this.state.list[i].id}>{this.state.list[i].title}</a></li>)
+      console.log('li: ', li);
+    }
     return (
       <>
         <nav>
           <ul>
             {/* HTML이나 이미지 json등의 파일들은 public폴더에 넣어 서비스한다. */}
             {/* 사용시 경로는 public을 절대 경로로잡고 사용한다 */}
-            <li><a href='1'>HTML</a></li>
-            <li><a href='2'>CSS</a></li>
-            <li><a href='3'>JavaScript</a></li>
+            {/* <li><a href={this.state.list.id}>{this.state.list.title}</a></li> */}
+            {/* <li><a href='2'>CSS</a></li> */}
+            {/* <li><a href='3'>JavaScript</a></li> */}
+            {listTag}
           </ul>
         </nav>
       </>
