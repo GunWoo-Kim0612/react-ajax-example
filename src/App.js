@@ -38,7 +38,15 @@ class Nav extends Component {
     let listTag = [];
     for (let i = 0; i < this.state.list.length; i++) {
       let li = this.state.list[i]
-      listTag.push(<li key={li.id}><a href={this.state.list[i].id}>{this.state.list[i].title}</a></li>);
+      listTag.push(<li key={li.id}>
+        <a href={li.id} data-id={li.id} onClick={function(e){
+          e.preventDefault();
+          this.props.onClick(e.target.dataset.id);
+           //data-id,  dataset을 통해 발생한 이벤트의 타겟...참조 
+        }.bind(this)}>
+        {li.title}
+        </a></li>);
+      console.log('key: ', li.id);
       console.log('li: ', li);
     }
     return (
@@ -61,10 +69,10 @@ class Nav extends Component {
 
 
 class Article extends Component {
-  
+
   render() {
 
-    
+
     return (
       <article>
         <h2>{this.props.title}</h2>
@@ -79,21 +87,33 @@ class Article extends Component {
 // 클래스형태로 변경함...
 class App extends Component {
 
- 
-  state={
-    article : {title : 'Welcome' , desc : 'Hello, React &amp; Ajax'}
+
+  state = {
+    article: { title: 'Welcome', desc: 'Hello, React &amp; Ajax' }
   }
-  
+
   render() {
 
-    
-    
+
+
     return (
       <>
         <div className="App">
           <h1>web</h1>
-          <Nav></Nav>
-          <Article title={this.state.article.title} desc = {this.state.article.desc}></Article>
+          <Nav onClick={function (id) {
+            fetch(id + '.json')
+            .then(function (result) {
+              return result.json();   //json잘 받았다면...
+            })
+            .then(function (json) {
+              this.setState({
+                article: { title: json.title, desc: json.desc }
+              })
+            }.bind(this));
+          }.bind(this)}>
+
+          </Nav>
+          <Article title={this.state.article.title} desc={this.state.article.desc}></Article>
         </div>
 
       </>
@@ -102,3 +122,9 @@ class App extends Component {
 }
 
 export default App;
+
+
+
+
+
+
