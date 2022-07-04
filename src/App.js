@@ -61,11 +61,14 @@ class Nav extends Component {
 
 
 class Article extends Component {
+  
   render() {
+
+    
     return (
       <article>
-        <h2>Welcome</h2>
-        Hello, React &amp; Ajax
+        <h2>{this.props.title}</h2>
+        {this.props.desc}
       </article>
     )
   }
@@ -73,26 +76,24 @@ class Article extends Component {
 
 
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <h1>web</h1>
-//       <Nav></Nav>
-//       <Article></Article>
-//     </div>
-//   );
-// }
-
-
 // 클래스형태로 변경함...
 class App extends Component {
+
+ 
+  state={
+    article : {title : 'Welcome' , desc : 'Hello, React &amp; Ajax'}
+  }
+  
   render() {
+
+    
+    
     return (
       <>
         <div className="App">
           <h1>web</h1>
           <Nav></Nav>
-          <Article></Article>
+          <Article title={this.state.article.title} desc = {this.state.article.desc}></Article>
         </div>
 
       </>
